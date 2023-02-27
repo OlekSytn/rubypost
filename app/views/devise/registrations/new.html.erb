@@ -1,0 +1,36 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="form-group">
+    <%= f.text_field :name, class: "form-control m-2 w-75", placeholder: "Name" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.email_field :email, class: "form-control m-2 w-75", placeholder: "email" %>
+  </div>
+
+  <div class="form-group mx-3">
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.password_field :password, class: "form-control m-2 w-75", placeholder: "new-password" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.password_field :password_confirmation, class: "form-control m-2 w-75", placeholder: "new-password" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_field :bio, class: "form-control m-2 w-75", placeholder: "bio" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_field :photo, class: "form-control m-2 w-75", placeholder: "photo", value: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign up", class:'btn btn-secondary m-2 w-75' %>
+  </div>
+<% end %>

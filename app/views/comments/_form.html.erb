@@ -1,0 +1,9 @@
+<%= form_with model: [@member, @post, comment] do |form| %>
+  <div class="comment header">
+    <div class="form-group m-3 w-75">
+      <%= form.text_field :text, class: "form-control m-2", placeholder: "Comment" %>
+    </div>
+    <%= link_to "Cancel", member_post_path(@member, @post), class: "btn btn-light" %>
+    <%= form.submit class:'btn btn-secondary mx-4' %>
+  </div>
+<% end %>

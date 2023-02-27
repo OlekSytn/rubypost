@@ -1,0 +1,11 @@
+<%= turbo_frame_tag comment do %>
+  <div class="comment">
+    <%= comment.author.name %> - <%= comment.text %>
+    <div class="comment_actions">
+      <% if !@current_user.nil? && (comment.author == @current_user || @current_user.is?("admin")) %>
+        <%= link_to 'Edit', edit_member_post_comment_path(@member, @post, comment), class: "btn btn-secondary btn-sm" %>
+        <%= button_to 'Delete', member_post_comment_path(@member, @post, comment), method: :delete, class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

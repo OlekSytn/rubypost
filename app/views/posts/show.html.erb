@@ -1,0 +1,51 @@
+<%= turbo_stream_from "comments" %>
+<% liked = @like.count > 0 ? "bi-star-fill" : "bi-star" %>
+<div class="card m-3">
+  <div class="card-body">
+    <div class="header">
+      <div>
+        <span>
+          <span class="card-title">
+            <%= @post.title %> by <%= @post.author.name %>
+          </span>
+          <span data-controller="like">
+            <i id="likes_counter" class=<%= liked %> data-action="click->like#change"></i>
+          </span>
+          <span class="counter"> <%= @post.likes_counter %></span>
+        </span>
+
+      </div>
+      <div>
+        <% if can? :destroy, @post %>
+          <%= button_to 'Delete', member_post_path(@post.author, @post), method: :delete, class: "btn btn-danger m-2" %>
+        <% end %>
+      </div>
+    </div>
+    
+    <p class="card-text"><%= @post.text %></p>
+  </div>
+</div>
+<div class="card m-3">
+  <div class="card-body header">
+    <div>
+      <h5>Comments</h5>
+    </div>
+    <div>
+      <%= link_to "New comment",
+        new_member_post_comment_path(@member, @post),
+        class: "btn btn-secondary m-2",
+        data: { turbo_frame: dom_id(Comment.new) } %>
+    </div>
+  </div>
+</div>
+<%= turbo_frame_tag Comment.new %>
+<div class="card m-3">
+  <div class="card-body">
+    <%= turbo_frame_tag "comments" do %>
+      <% @comments.each do |comment| %>
+        <%= render "posts/comment", comment: comment %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

@@ -1,0 +1,33 @@
+<%= render partial: 'partials/member_display', locals: { member: @member } %>
+<div class="card m-3">
+  <div class="card-body">
+    <h5 class="card-title">Bio</h5>
+    <p class="card-text"><%= @member.bio %></p>
+  </div>
+</div>
+<% if @member.recent_posts.size.zero? %>
+    <div class="card m-3">
+      <div class="card-body">
+        <p class="mb-2 text-muted"><small>There are no posts yet</small></p>
+      </div>
+    </div>
+<% else %>
+  <% @member.recent_posts.each do |post| %>
+    <div class="card m-3">
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= link_to post.title, member_post_path(@member, post), class: "text-decoration-none" %>
+        </h5>
+        <% if post.text.size > 70 %>
+          <p class="card-text"><%= post.text[0, 70] %>...</p>
+        <% else %>
+          <p class="card-text"><%= post.text %></p>
+        <% end %>
+        <p class="mb-2 text-muted text-end"><small>Comments: <%= post.comments_counter %> Likes: <%= post.likes_counter %></small></p>
+      </div>
+    </div>
+  <% end %>
+  <button type="button" class="btn btn-link text-primary mx-auto d-block mb-4 border border-primary rounded text-decoration-none">
+    <%= link_to "See all posts", member_posts_path(@member), class: "text-decoration-none" %>
+  </button>
+<% end %>

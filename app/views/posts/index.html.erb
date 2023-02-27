@@ -1,0 +1,44 @@
+<%= render partial: 'partials/member_display', locals: { member: @member } %>
+<% @posts.each do |post| %>
+  <div class="card m-3">
+    <div class="card-body">
+      <h5 class="card-title"><%= link_to post.title, member_post_path(@member.id, post.id), class: "text-decoration-none" %></h5>
+      <% if post.text.size > 70 %>
+        <p class="card-text"><%= post.text[0, 70] %>...</p>
+      <% else %>
+        <p class="card-text"><%= post.text %></p>
+      <% end %>
+      <p class="mb-2 text-muted text-end"><small>Comments: <%= post.comments_counter %> Likes: <%= post.likes_counter %></small></p>
+    </div>
+  </div>
+  <div class="card m-3">
+    <div class="card-body">
+      <% if post.comments_counter.zero? %>
+        <p class="mb-2 text-muted"><small>There are no comments yet</small></p>
+      <% else %>
+        <% post.recent_comments.each do |comment| %>
+          <%= comment.author.name %>: <%= comment.text %><br/>
+        <% end %>
+        <% if post.comments_counter > 5 %>
+          <p>...</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% previous = (@page.to_i - 1) > 0 ? @page.to_i - 1 : 1 %>
+<% limit = (@member.post_counter + @posts_per_page - 1) / @posts_per_page %>
+<% next_page = (@page.to_i + 1) > limit ? limit : @page.to_i + 1 %>
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <%= link_to "Previous", member_posts_path(@member, page: previous), class: "p-2 text-decoration-none border rounded-left" %>
+    </li>
+    <% (1..limit).each do |pg| %>
+      <li class="page-item"><%= link_to pg, member_posts_path(@member, page: pg), class: "p-2 text-decoration-none border" %></li>
+    <% end %>
+    <li class="page-item">
+      <%= link_to "Next", member_posts_path(@member, page: next_page), class: "p-2 text-decoration-none border rounded-right" %>
+    </li>
+  </ul>
+</nav>

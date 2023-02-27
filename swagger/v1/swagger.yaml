@@ -1,0 +1,304 @@
+---
+openapi: 3.0.1
+info:
+  title: Blog app API V1
+  description: This is a sample server Blog app.
+  version: v1
+paths:
+  "/api/v1/auth/login":
+    post:
+      summary: Valid member log in
+      tags:
+      - Log in
+      parameters: []
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+        description: Valid member log in
+  "/api/v1/members/{member_id}/posts/{post_id}/comments":
+    get:
+      summary: Retrieves comments
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Comments
+      parameters:
+      - name: member_id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      - name: post_id
+        in: path
+        required: true
+        description: post id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  text:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  author_id:
+                    type: integer
+                  post_id:
+                    type: integer
+        '404':
+          description: Not found
+    post:
+      summary: Create a comment
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Comments
+      parameters:
+      - name: member_id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      - name: post_id
+        in: path
+        required: true
+        description: post id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+              - text
+        description: Create a comment
+  "/api/v1/members/{member_id}/posts/{post_id}/comments/{id}":
+    get:
+      summary: Retrieve a comment
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Comments
+      parameters:
+      - name: member_id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      - name: post_id
+        in: path
+        required: true
+        description: post id
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: comment id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  text:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  author_id:
+                    type: integer
+                  post_id:
+                    type: integer
+        '404':
+          description: Not found
+  "/api/v1/members/{id}/posts":
+    get:
+      summary: Retrieves posts
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Posts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  text:
+                    type: string
+                  comments_counter:
+                    type: integer
+                  likes_counter:
+                    type: integer
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  author_id:
+                    type: integer
+        '404':
+          description: Not found
+  "/api/v1/members/{member_id}/posts/{id}":
+    get:
+      summary: Retrieve a post
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Posts
+      parameters:
+      - name: member_id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: post id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  text:
+                    type: string
+                  comments_counter:
+                    type: integer
+                  likes_counter:
+                    type: integer
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  author_id:
+                    type: integer
+        '404':
+          description: Not found
+  "/api/v1/members":
+    get:
+      summary: Retrieves members
+      tags:
+      - Members
+      responses:
+        '200':
+          description: OK
+  "/api/v1/members/{id}":
+    get:
+      summary: Retrieve a member
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Members
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: member id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  bio:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  photo:
+                    type: string
+                  post_counter:
+                    type: integer
+                  email:
+                    type: string
+                  role:
+                    type: string
+        '404':
+          description: Not found
+servers:
+- url: http://localhost:3000
+  variables:
+    defaultHost:
+      default: localhost:3000
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization

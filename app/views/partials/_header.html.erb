@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <%= link_to member_signed_in? ? current_member.name : 'Blog app', root_path, class: "text-decoration-none p-3" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <% if member_signed_in? %>
+          <li class="nav-item p-3">
+            <%= button_to 'Sign out', destroy_member_session_path, method: :delete, class: "nav-link bg-transparent border-0" %>
+          </li>
+          <li class="nav-item p-3">
+            <%= link_to 'Edit profile', edit_member_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item p-3">
+            <%= link_to 'Add post', new_member_post_path(current_member), class: "nav-link" %>
+          </li>
+        <% else %>
+          <li class="nav-item p-3">
+            <%= link_to 'Sign up', new_member_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item p-3">
+            <%= link_to 'Sign in', new_member_session_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
